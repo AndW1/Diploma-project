@@ -1,0 +1,110 @@
+﻿@model TaskManager.Models.BoardTask
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<style>
+    label {
+        font-size: 15px;
+    }
+
+    .send {
+        float: left;
+    }
+
+    #link {
+        color: dodgerblue;
+    }
+
+    span {
+        color: red;
+    }
+    #inline {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="container">
+    <h4>Edit</h4>
+
+    <h5>BoardTask</h5>
+    <hr />
+
+</div>
+
+<div class="container">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <input asp-for="Id" type="hidden" class="form-control" />
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <input asp-for="IdOwner" type="hidden" class="form-control" asp-items="@ViewBag.IdOwner" />
+                        <span asp-validation-for="IdOwner" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <label asp-for="NameTask" class="control-label"></label>
+                        <input asp-for="NameTask" class="form-control" />
+                        <span asp-validation-for="NameTask" class="text-danger"></span>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <label asp-for="ContentTask" class="control-label"></label>
+                        <input asp-for="ContentTask" class="form-control" />
+                        <span asp-validation-for="ContentTask" class="text-danger"></span>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <label asp-for="DateCreated" class="control-label"></label>
+                        <input asp-for="DateCreated" class="form-control" readonly />
+                        <span asp-validation-for="DateCreated" class="text-danger"></span>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <label asp-for="DateFinished" class="control-label"></label>
+                        <input asp-for="DateFinished" class="form-control" />
+                        <span asp-validation-for="DateFinished" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <input asp-for="BackgroundImage" type="hidden" class="form-control" />
+                        <span asp-validation-for="BackgroundImage" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3">
+                        <input asp-for="TaskCreated" type="hidden" class="form-control" />
+                        <span asp-validation-for="TaskCreated" class="text-danger"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="form-group col s12 m6 offset-m3" id="inline">
+                        <div class="send">
+                            <input type="submit" value="Edit" class="btn" />   &nbsp;
+                        </div>
+                        <div class="send">
+                            <a asp-action="Index" id="link">Back to BoardTasks</a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+</div>
+
+

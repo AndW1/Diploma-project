@@ -1,0 +1,137 @@
+﻿@model TaskManager.Models.ViewModels.ViewModelTask.UserTaskViewModel
+@using System.Text.RegularExpressions;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<style>
+    #boardtask {
+        background-color: rgba(181, 175, 175,0.55);
+        margin-bottom: 10px;
+    }
+
+    #card {
+        height: 130px;
+        padding: 2px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card-panel grey lighten-5 z-depth-1" id="card">
+                <div class="row valign-wrapper">
+                    <div class="col s3">
+                        @{
+        if (Model.UserView.ImagePath != null && Model.UserView.ImagePath != "")
+        {
+            string[] lines = Regex.Split(Model.UserView.ImagePath, "/");
+                    <img src="~/images/@lines[lines.Length-1]" alt="" class="circle responsive-img" />
+                    @*<img src="~/images/icon/nophoto.png" alt="" class="circle responsive-img">*@
+
+}
+else
+{
+                    <img src="~/images/icon/nophoto.png" alt="" class="circle responsive-img">
+                    @*<img src="~/images/icon/nophoto.png" alt="" class="circle responsive-img">*@
+
+}
+
+                        }
+
+                    </div>
+                    <div class="col s7">
+
+                        <h5>@Model.UserView.Name</h5>
+                        <h6>@Model.UserView.Email</h6>
+
+                    </div>
+                    <div class="col s2">
+                        <div class="action-btn">
+                            <a asp-area="" asp-controller="Profile" asp-action="ProfileEdit" class="btn-floating btn-small green">
+                                <i class="large material-icons">mode_edit</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="text-align:center">
+    <h5>Панель задач</h5>
+</div>
+
+
+<div class="container">
+    <p id="bold" style="width:200px">
+        <a asp-action="Create">Create New BoardTask</a>
+    </p>
+</div>
+>
+
+
+<div class="container">
+
+    @{
+        BoardTask[] array = Model.BoardTasks.ToArray();
+        int count_row = (int)Math.Ceiling((double)array.Count() / 2.0);
+
+        for (int i = 0; i < count_row; i++)
+        {
+            <div class="row">
+                @for (int j = i * 2; j < i * 2 + 2; j++)
+                {
+                    if (j < array.Count())
+                    {
+
+
+                        <div class="col s12 m6">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text">
+                                    <span class="card-title">@array[j].NameTask</span>
+                                    <p>
+                                        @array[j].ContentTask;
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <a asp-action="Edit" asp-route-id="@array[j].Id">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@array[j].Id">Open details</a>
+                                    <a asp-action="Delete" asp-route-id="@array[j].Id" style="color:red">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+
+        }
+    }
+</div>
+
+
+@{
+
+    if (array.Length > 4)
+    {
+        <br /><br />
+        <div class="container">
+            <p id="bold">
+                <a asp-action="Create">Create New BoardTask</a>
+            </p>
+        </div>
+    }
+}
+
+
+
+
+
+
+
+

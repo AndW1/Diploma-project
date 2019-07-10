@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Confirm</title>
+
+    <style>
+        #login {
+            width: 500px;
+            margin: auto;
+        }
+
+        .msg {
+            width: 100%;
+            height: auto;
+            border: 1px solid;
+            color: grey;
+        }
+
+        .msg-info {
+            border-color: #0288d1;
+            background-color: #29b6f6;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="login">
+        <br /><br /><br/><br/>
+  
+        <div class="msg msg-info z-depth-3"> <h3 style="margin-top:10px">TaskManager - подтверждение регистрации</h3></div>
+
+        <br />
+
+        <div>
+            <p>Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме</p>
+            <h2 style="text-align:center"><a href="@ViewBag.Href" target="_blank">@ViewBag.Name</a></h2>
+        </div>
+
+
+    </div>
+
+
+</body>
+</html>

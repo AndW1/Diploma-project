@@ -1,0 +1,99 @@
+﻿@model TaskManager.Models.BoardTask
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+
+<style>
+
+    label {
+        font-size: 15px;
+    }
+
+    span {
+        color: red;
+    }
+
+    .send {
+        float: left;
+    }
+
+    #link {
+        color: dodgerblue;
+    }
+    #inline {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+
+<div class="container">
+    <h5>Create Boardtask</h5>
+    <hr />
+</div>
+<br />
+
+
+<div class="container">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="form-group col s12 m6 offset-m3">
+                <label asp-for="NameTask" class="control-label"></label>
+                <input asp-for="NameTask" class="form-control" />
+                <span asp-validation-for="NameTask" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group  col s12 m6 offset-m3">
+                <label asp-for="ContentTask" class="control-label"></label>
+                <textarea asp-for="ContentTask" class="form-control"></textarea>
+                <span asp-validation-for="ContentTask" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group  col s12 m6 offset-m3">
+                <label asp-for="DateFinished" class="control-label"></label>
+                <input asp-for="DateFinished" class="form-control" />
+                <span asp-validation-for="DateFinished" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <input name="date_create" class="form-control" type="hidden" id="datecreate" />
+        </div>
+        <br /><br />
+
+        <div class="row">
+        <div class="form-group col s12 m6 offset-m3" id="inline">
+                <div class="send">
+                    <button type="submit" class="btn" id="createtask">Create</button>  &nbsp;
+                </div>
+                <div class="send">
+                    <a asp-action="Index" id="link">Back to BoardTask</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    var date = new Date();
+    var timestamp = date.getTime();
+    var time = document.getElementById("datecreate");
+    time.value = timestamp;
+</script>
+
+
+
+
+
+
+
+
+
+

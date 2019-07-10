@@ -1,0 +1,79 @@
+﻿@model TaskManager.Models.StageTask
+
+@{
+    ViewData["Title"] = "CreateStage";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+<style>
+    label{
+        font-size:15px;
+    }
+    span{
+        color:red;
+    }
+    .send{
+        float:left;
+    }
+    #link {
+        color: dodgerblue;
+    }
+    #inline {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="container">
+
+    <h4 style="color:blue">Create Stage number @ViewData["Number"]</h4>
+    <hr /><br/><br/>
+</div>
+
+
+<div class="container" style="width:50%">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="CreateStage">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="IdOwner" class="form-control" value="@ViewData["IdOwner"]" type="hidden" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ContentStage" class="control-label"></label>
+                    <input asp-for="ContentStage" class="form-control" />
+                    <span asp-validation-for="ContentStage" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DateFinished" class="control-label"></label>
+                    <input asp-for="DateFinished" class="form-control" />
+                    <span asp-validation-for="DateFinished" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input name="date_create" class="form-control" type="hidden" id="datecreate" />
+                </div>
+
+                <br/><br/>
+                <div class="form-group" id="inline">
+                    <div class="send">
+                        <button type="submit" class="btn" id="createtask">Create Stage</button> &nbsp; 
+                    </div>
+                    <div class="send">
+                        <a asp-action="Details" asp-route-id="@ViewData["IdOwner"]" id="link">Back to Task</a>
+                    </div>
+                   
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+<script>
+    var date = new Date();
+    var timestamp = date.getTime();
+    var time = document.getElementById("datecreate");
+    time.value = timestamp;
+</script>
+

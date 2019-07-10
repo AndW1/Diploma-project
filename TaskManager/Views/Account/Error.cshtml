@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<h2>Error</h2>
+
+
+
+<div class="alert alert-warning">
+    <strong>Error!</strong> @ViewBag.Exception
+</div>
+
+<a asp-action="Signin" style="color:dodgerblue">Back to sign in</a>
+

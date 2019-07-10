@@ -1,0 +1,400 @@
+﻿@model TaskManager.Models.ViewModels.ViewModelStage.BoardStageViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<style>
+    label {
+        font-size: 15px;
+    }
+
+    #action {
+        float: left;
+        margin-right: 20px;
+    }
+
+    #card_info {
+        position: relative;
+        top: 10px;
+        background-color: lightblue;
+        margin-bottom: 20px;
+    }
+
+    .modalEdit {
+        height: 530px;
+        width: 300px;
+        border: 3px outset gray;
+        background: wheat;
+        top: 20%; /* отступ сверху */
+        right: 0;
+        left: 0;
+        font-size: 12px;
+        margin: 0 auto;
+        z-index: 2; /* поверх всех */
+        display: none; /* сначала невидим */
+        position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+        padding: 5px;
+        border: 1px solid #383838;
+    }
+
+    .modalwin {
+        height: 440px;
+        width: 300px;
+        border: 3px outset gray;
+        background: wheat;
+        top: 20%; /* отступ сверху */
+        right: 0;
+        left: 0;
+        font-size: 12px;
+        margin: 0 auto;
+        z-index: 2; /* поверх всех */
+        display: none; /* сначала невидим */
+        position: fixed; /* фиксированное позиционирование, окно стабильно при прокрутке */
+        padding: 5px;
+        border: 1px solid #383838;
+    }
+
+    #shadow {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* поверх всех  кроме окна*/
+        background: #000;
+        opacity: 0.5; /*прозрачность*/
+        left: 0;
+        top: 0;
+    }
+
+    .input.disabled:hover {
+        cursor: not-allowed;
+    }
+
+
+    #task_time {
+        display: flex;
+        position: relative;
+        color: white;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    #right {
+        position: absolute;
+        right: 20px;
+    }
+
+    #left {
+        margin-left: 23px;
+    }
+
+    .remove {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 3px 20px rgba(0,0,0,.25), inset 0 2px 0 rgba(255,255,255,.6), 0 2px 0 rgba(0,0,0,.1), inset 0 0 20px rgba(0,0,0,.1);
+    }
+
+    #imgg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .ff {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: row;
+    }
+
+    .time {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #err {
+        color: red;
+        font-size: 15px;
+    }
+
+    #card {
+        margin: 5px;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-left: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    #singletask {
+        background-color: rgba(181, 175, 175,0.55);
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .card-action {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .card {
+        background-color: white;
+    }
+
+    dl {
+        margin-left: 20%;
+    }
+
+    #blue {
+        color: darkblue;
+        font-size: 20px;
+    }
+
+    #black {
+        font-size: 20px;
+    }
+</style>
+
+<br />
+
+<div class="container">
+    <div class="row" style="margin-bottom:15px">
+        <div class="col s12 m12">
+            <div class="card text-center" id="singletask">
+                <div class="card-body" style="padding-left:10px">
+                    <h3>@Model.BoardView.Name</h3>
+                    <hr />
+                    <p>
+                        @Model.BoardView.Content
+                    </p>
+                </div>
+                <div id="task_time">
+                    <div id="left">
+                        @{
+                            string start = Model.BoardView.DateCreated.ToShortDateString();
+                            <span>@start</span>
+                        }
+                    </div>
+                    <div id="right">
+                        @{
+                            string finish = Model.BoardView.DateFinished.ToShortDateString();
+                            <span>@finish</span>
+                        }
+                    </div>
+                </div>
+                <div class="ff">
+
+                    <a href="#" id="edit_task" class="btn" style="background-color:darkorange">Edit</a>
+                    <a asp-action="Index" asp-route-id="@Model.BoardView.Id" class="btn btn-info">Back</a>
+                    <a href="#" id="delete_task" class="btn" style="background-color:orangered">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+
+    <p id="bold" style="width:200px">
+        <a asp-action="CreateStage" asp-route-id="@Model.BoardView.Id">Create new Stage</a>
+    </p>
+
+
+    <!-- Mодальное всплывающее окно DELETE TASK-->
+    <div id="popupWin" class="modalwin">
+        <div style="text-align:center">
+            <h5>Are you sure you want to delete this BoardTask?</h5>
+        </div>
+        <hr />
+
+        <div id="#form">
+            <dl>
+                <dt id="black">
+                    @Html.DisplayNameFor(model => model.BoardView.Name)
+                </dt>
+
+                <dd id="blue">
+                    @Html.DisplayFor(model => model.BoardView.Name)
+                </dd>
+
+                <dt id="black">
+                    @Html.DisplayNameFor(model => model.BoardView.Content)
+                </dt>
+                <dd id="blue">
+                    @Html.DisplayFor(model => model.BoardView.Content)
+                </dd>
+                <dt id="black">
+                    @Html.DisplayNameFor(model => model.BoardView.DateCreated)
+                </dt>
+                <dd id="blue">
+                    <span>@Model.BoardView.DateCreated.ToShortDateString()</span>
+                    @Html.HiddenFor(model => model.BoardView.DateCreated)
+                </dd>
+                <dt id="black">
+                    @Html.DisplayNameFor(model => model.BoardView.DateFinished)
+                </dt>
+                <dd id="blue">
+                    <span>@Model.BoardView.DateFinished.ToShortDateString()</span>
+                    @Html.HiddenFor(model => model.BoardView.DateFinished)
+                </dd>
+            </dl>
+        </div>
+
+
+        <div style="text-align:center">
+            <form asp-action="Delete">
+
+                <input type="hidden" value="@Model.BoardView.Id" name="id" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!--End Mодальное всплывающее окно DELETE TASK-->
+    <!-- Mодальное всплывающее окно EDIT TASK-->
+    <div style="text-align: center" id="winEdit" class="modalEdit">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Edditing BoardTask</h4>
+                <label id="err"></label>
+                <form asp-action="EditBoardView">
+
+                    <div class="form-group">
+                        <input value="@Model.BoardView.Id" type="hidden" name="Id" required />
+                        <span asp-validation-for="@Model.BoardView.Id" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.BoardView.Name" class="control-label" id="black"></label>
+                        <input asp-for="@Model.BoardView.Name" class="form-control input disabled" name="Name" required readonly id="blue" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.BoardView.Content" class="control-label" id="black"></label>
+                        <input asp-for="@Model.BoardView.Content" class="form-control" name="Content" required id="blue" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.BoardView.DateCreated" class="control-label" id="black"></label>
+                        <input asp-for="@Model.BoardView.DateCreated" class="form-control  input disabled" name="DateCreated" id="dc" required readonly style="color:darkblue" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.BoardView.DateFinished" class="control-label" id="black"></label>
+                        <input asp-for="@Model.BoardView.DateFinished" class="form-control" name="DateFinished" id="df" required onchange="functionDate()" style="color:darkblue" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>  <!--End of Mодальное всплывающее окно EDIT TASK-->
+
+</div>
+<br />
+
+
+
+
+
+
+<!-------------------------------------------------------------------------------------------->
+
+
+<div class="container">
+    @{
+        int count_row = (int)Math.Ceiling((double)Model.StageTasks.Count() / 3.0);
+
+
+        List<StageTask> list = Model.StageTasks.ToList();
+
+        for (int i = 0; i < count_row; i++)
+        {
+            <div class="row">
+
+                @for (int j = i * 3; j < i * 3 + 3; j++)
+                {
+
+                    if (j < list.Count())
+                    {
+                        <div class="col s12 m4">
+                            <div class="card">
+                                <div class="card-content" style="color:black">
+
+
+                                    @{
+                                        string nameStage = list[j].NameStage + (j + 1).ToString();
+                                        <span class="card-title">@nameStage</span>
+                                    }
+
+
+                                    <p>
+                                        @list[j].ContentStage
+                                    </p>
+                                </div>
+                                @{
+                                    var parms = new Dictionary<string, string>
+{
+{ "Id", list[j].Id.ToString() },
+{ "IdOwner", list[j].IdOwner.ToString() },
+{"name", nameStage }
+};
+                                }
+
+
+                                @{
+                                    var delete_params = new Dictionary<string, string>
+                                                                {
+                                                                    { "Id", list[j].Id.ToString() },
+                                                                    { "IdOwner", list[j].IdOwner.ToString() }
+
+                                                                };
+                                }
+
+
+                                <div class="card-action">
+                                    <span style="color:blue">@list[j].DateCreated.ToShortDateString()</span>
+                                    <span style="color:blue">@list[j].DateFinished.ToShortDateString()</span>
+                                </div>
+                                <div class="card-action">
+                                    <a asp-route="nodeindex" asp-all-route-data="parms" style="color:chocolate">Open content</a>
+
+                                    <a asp-action="DeleteStage" asp-all-route-data="delete_params">
+                                        <div class="button remove">
+                                            <img src="~/images/icon/remove.png" id="imgg">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                }
+
+            </div>
+        }
+
+    }
+
+</div>
+
+
+
+<div class="container">
+    @{
+
+        if (count_row > 2)
+        {
+            <p id="bold" style="width:200px">
+                <a asp-action="CreateStage" asp-route-id="@Model.BoardView.Id">Create new Stage</a>
+            </p>
+
+        }
+    }
+</div>
+
+

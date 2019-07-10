@@ -1,0 +1,192 @@
+﻿@model IEnumerable<TaskManager.Models.Admin.ViewUserModel>
+@using TaskManager.Models.Admin
+@using Microsoft.AspNetCore.Http
+
+@{
+    Layout = "~/Views/Shared/_Master.cshtml";
+    ViewData["Title"] = "Admin";
+}
+
+<style>
+    .msg {
+        width: 100%;
+        border: 1px solid;
+        padding: 10px;
+        margin-top: 20px;
+        color: grey;
+    }
+
+    .msg-error {
+        /*// rouge*/
+        border-color: #d32f2f;
+        background-color: #ef5350;
+        color: white;
+    }
+
+    #error {
+        display: none;
+        text-align: center;
+    }
+
+    #image_size {
+        width: 240px;
+        height: 240px;
+        padding-top: 2px;
+    }
+
+    #admin_panel {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #test {
+        height: 100px;
+        background-color: red;
+    }
+</style>
+
+
+
+<div class="container">
+    <h4>Hello admin</h4>
+</div>
+
+
+<div class="container">
+
+
+    <div id="admin_panel">
+        <!-- Dropdown Trigger -->
+        <div>
+            <a class='dropdown-trigger btn' href='#' data-target='dropdown3'>Действия</a>
+        </div>
+
+        <div class="input-field col s4" style="margin-left:40px">
+            <select id="num" onchange="functionChange()">
+                <option value="" disabled selected>Фильтры</option>
+                <option value="1">Дата регистрации</option>
+                <option value="2">Количество задач</option>
+                <option value="3">По умолчанию</option>
+            </select>
+        </div>
+    </div>
+
+
+    <!-- Dropdown Structure -->
+    <ul id='dropdown3' class='dropdown-content'>
+        <li id="select_all"><a href="#!" id="none">выделить все</a></li>
+        <li class="divider" tabindex="-1"></li>
+        <li id="deselect_all"><a href="#!" id="none">отменить выделение</a></li>
+        <li class="divider" tabindex="-1"></li>
+        <li><a class="modal-trigger" href="#modal1" id="open_modal" style="text-decoration:none">создать email</a></li>
+    </ul>
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h5>Введите текст писма</h5>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="text_email" type="text" class="validate" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn waves-effect waves-light" type="submit" name="action" id="send_email">
+            ОТПРАВИТЬ
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <div class="msg msg-error z-depth-3 scale-transition" id="error"></div>
+</div>
+
+
+
+
+
+
+<div class="container main" id="result">
+    <div id="subresult">
+        @{
+            ViewUserModel[] array = Model.ToArray();
+
+            int count_row = (int)Math.Ceiling((double)array.Count() / 2.0);
+
+            for (int i = 0; i < count_row; i++)
+            {
+
+                <div class="row">
+                    @for (int j = i * 2; j < i * 2 + 2; j++)
+                    {
+                        if (j < array.Count())
+                        {
+
+                            <div class="col s12 m6">
+                                <h4 class="header" style="color:darkblue">@array[j].Name  @array[j].LastName</h4>
+                                <div class="card horizontal">
+                                    <div class="card-image" id="image_size">
+                                        @{
+                                            if (array[j].Image != null && array[j].Image != "")
+                                            {
+                                                string [] lines = array[j].Image.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+                                                //string[] lines = Regex.Split(array[j].Image, "/");
+                                                <img src="~/images/@lines[lines.Length-1]" />
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/icon/nophoto.png" />
+                                            }
+                                        }
+                                    </div>
+                                    <div class="card-stacked">
+                                        <div class="card-content">
+                                            <ul class="collapsible">
+                                                <li>
+                                                    <div class="collapsible-header"><i class="material-icons">date_range</i>Дата регистрации</div>
+                                                    <div class="collapsible-body"><span>@array[j].DateRegister.ToShortDateString()</span></div>
+
+                                                </li>
+                                                <li>
+                                                    <div class="collapsible-header"><i class="material-icons">storage</i>Количество задач</div>
+                                                    <div class="collapsible-body"><span>@array[j].CountTask</span></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="card-action">
+                                            <label>
+                                                <input type="checkbox" id="checkbox" />
+                                                <span><i class="material-icons">contact_mail</i></span>
+                                                <input type="hidden" value="@array[j].Id" id="info" />
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+
+
+<script>
+    window.onload = function () {
+        var li = document.getElementById('admin');
+        li.classList.add("active");
+    };
+</script>

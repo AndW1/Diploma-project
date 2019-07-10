@@ -1,0 +1,103 @@
+﻿@model TaskManager.Models.AccountValidation.LoginForm
+@{
+    ViewData["Title"] = "Signin";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<style>
+   
+    .info {
+        margin-top: 30px;
+        width: 50%;
+    }
+
+    .msg {
+        width: 100%;
+        height: auto;
+        border: 1px solid;
+        color: grey;
+    }
+
+    .msg-info {
+        border-color: #0288d1;
+        background-color: #29b6f6;
+        color: white;
+        text-align: center;
+    }
+
+    span {
+        color: red;
+    }
+
+    label {
+        font-size: 15px;
+    }
+
+    #link {
+        color: dodgerblue;
+    }
+
+    .send {
+        float: left;
+    }
+    #inline {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+
+<div class="row">
+    <div class="container info col s12 m4 offset-m4" style="margin-bottom:30px">
+        <div class="msg msg-info z-depth-3"> <h5 style="margin-top:10px">Sign in to your account</h5></div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="container  col s12 m4 offset-m4">
+
+        <div class="row">
+            <form asp-antiforgery="true" asp-action="Signin" asp-controller="Account" class="col s12">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="Email" type="email" class="validate">
+                        <label asp-for="Email"></label>
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="Password" type="password" class="validate">
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                </div>
+                <div id="inline">
+                    <div class="send">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">
+                            Submit
+                            <i class="material-icons right">send</i>
+                        </button>&nbsp;
+                    </div>
+                    <div class="send">
+                        <a asp-action="ChangePassword" id="link">Change password</a>
+                    </div>
+
+
+                </div>
+               
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+

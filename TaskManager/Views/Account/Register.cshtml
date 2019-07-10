@@ -1,0 +1,111 @@
+﻿@model TaskManager.Models.AccountValidation.RegisterForm
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+<style>
+  
+    .info {
+        margin-top: 30px;
+        width: 50%;
+    }
+    .msg {
+        width: 100%;
+        height: auto;
+        border: 1px solid;
+        color: grey;
+    }
+
+    .msg-info {
+        border-color: #0288d1;
+        background-color: #29b6f6;
+        color: white;
+        text-align: center;
+    }
+    span {
+        color: red;
+    }
+
+    label {
+        font-size: 15px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="container info col s12 m4 offset-m4" style="margin-bottom:30px">
+        <div class="msg msg-info z-depth-3"> <h5 style="margin-top:10px">Get TaskManager account</h5></div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="container col s12 m4 offset-m4">
+
+        <div class="row">
+            <form asp-antiforgery="true" asp-action="Register" asp-controller="Account" class="col s12">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input asp-for="Name" type="text" class="validate">
+                        <label asp-for="Name"></label>
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input asp-for="LastName" type="text" class="validate">
+                        <label asp-for="LastName"></label>
+                        <span asp-validation-for="LastName"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="Email" type="email" class="validate">
+                        <label asp-for="Email"></label>
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="Password" type="password" class="validate">
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input asp-for="Confirm" type="password" class="validate">
+                        <label asp-for="Confirm"></label>
+                        <span asp-validation-for="Confirm"></span>
+                    </div>
+                </div>
+                <div>
+                    <input name="date_register" class="form-control" type="hidden" id="time" />
+                </div>
+
+                <button class="btn waves-effect waves-light" type="submit" name="action">
+                    Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var date = new Date();
+    var timestamp = date.getTime();
+    var time = document.getElementById("time");
+    time.value = timestamp;
+</script>
+
+
+
+         
+
+
+           

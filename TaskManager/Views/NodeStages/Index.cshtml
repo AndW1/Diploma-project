@@ -1,0 +1,195 @@
+﻿@model IEnumerable<TaskManager.Models.NodeStage>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<style>
+
+    #create_node {
+        display: none;
+        padding-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    #createnode {
+        margin-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    #item {
+        background-color: palegreen;
+    }
+
+    #error {
+        font-size: 15px;
+        color: red;
+    }
+
+    #check {
+        height: 15px;
+        width: 15px;
+    }
+
+    #nodeitem:hover {
+        background-color: gainsboro;
+    }
+
+    #bread {
+        background-color: rgba(232, 227, 227, 1);
+        margin: auto;
+        padding-left: 10px;
+        margin-bottom: 20px;
+    }
+
+    #wrapper a {
+        color: darkblue;
+        font-weight: bold;
+    }
+
+    #pag {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+</style>
+
+
+<br /><br />
+
+
+
+<div class="container">
+    <nav id="bread">
+        <div class="nav-wrapper" id="wrapper">
+            <div class="col s12">
+                <a href="../BoardTasks/Index" class="breadcrumb">Board Tasks</a>
+                <a href="../BoardTasks/Details/@ViewBag.IdOwner" class="breadcrumb">@ViewBag.NameTask</a>
+                <a href="#!" class="breadcrumb"> @ViewBag.NameStage</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+<div class="container">
+    <a class="btn  green" id="createnode"><i class="material-icons">add</i></a>
+</div>
+
+<div class="container" id="create_node">
+    <div class="row">
+        <div class="col s2  m1  offset-m2">
+            <button  class="btn grey" id="cancel">Cancel</button>
+        </div>
+        <div class="col s12  m6">
+            <input type="text" class="form-control" id="content" placeholder="Type the node content" style="text-align:left" />
+        </div>
+
+        <div class="col s2  m1">
+            <button class="btn btn-success" id="savenode">Save</button>
+        </div>
+        <div class="element">
+            <input type="hidden" id="id" value="@ViewBag.IdStage" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <label id="error" style="margin-left:10%"></label>
+</div>
+
+
+
+
+<!---------------------------------------------->
+
+<div class="container">
+    <hr />
+
+    <div class="row">
+        <div class="container col s12 m6 offset-m3">
+
+            <div class="collection">
+                <div class="result">
+
+                    @foreach (var item in Model)
+                    {
+
+
+                        <div class="collection-item " id="nodeitem">
+
+                            <span class="badge" onclick="removeNode(@item.Id)"><a href="#!"><span>&#10006;</span></a></span>
+                            <label>
+
+
+                                @{ bool? c = item.NodeCreated;                                
+                                    bool actualBool = c ?? false;
+                                }
+
+                                @{
+                                    if (actualBool)
+                                    {
+
+                                        <input type="checkbox" id='check' value="@item.Id" checked="checked" />
+                                        <span id='contentnode' style="text-decoration:line-through">@item.ContentNode</span>
+
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id='check' value="@item.Id" />
+                                        <span id='contentnode'>@item.ContentNode</span>
+
+                                    }
+
+                                }
+
+                            </label>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container" id="pag">
+    <div class="ul">
+        <ul class="pagination">
+            @{
+                if (@ViewBag.TotalPages > 1)
+                {
+                    <li class="disabled" id="left"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+
+                    <li class="active" value="1" id="pagenum"><a href="#!">1</a></li>
+                    for (int i = 1; i < @ViewBag.TotalPages; i++)
+                    {
+                        int index = i + 1;
+                        <li value="@index" id="pagenum"><a href="#!">@index</a></li>
+                    }
+
+                    <li id="right"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                }
+
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

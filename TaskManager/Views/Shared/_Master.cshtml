@@ -1,0 +1,222 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@*@{
+        ViewData["Title"] = "_Master";
+    }
+
+*@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import materialize.css-->
+    @*<link type="text/css" rel="stylesheet" href="~/mz/css/materialize.min.css" media="screen,projection" />
+        <link rel="stylesheet" href="~/mz/css/style.css">*@
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">*@
+
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css />
+
+
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"] - TaskManager</title>
+
+
+    <style>
+        .brand-logo {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 35px;
+        }
+
+        #navbar {
+            background-color: cornflowerblue;
+        }
+
+        #none {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Dropdown Structure -->
+    <ul id="dropdown1" class="dropdown-content">
+        <li>
+            <a asp-area="" asp-controller="Profile" asp-action="ProfileEdit" id="none"><i class="material-icons">person</i>I am</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a asp-area="" asp-controller="Account" asp-action="Logout" id="none"><i class="material-icons">exit_to_app</i>Exit</a>
+        </li>
+        <li class="divider"></li>
+    </ul>
+
+    <!-- Dropdown Structure -->
+    <ul id="dropdown2" class="dropdown-content">
+        <li>
+            <a asp-area="" asp-controller="Profile" asp-action="ProfileEdit"><i class="material-icons">person</i>I am</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a asp-area="" asp-controller="Account" asp-action="Logout"><i class="material-icons">exit_to_app</i>Log out</a>
+        </li>
+        <li class="divider"></li>
+    </ul>
+
+
+    <nav id="navbar">
+        <div class="nav-wrapper">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-logo center" id="none">TASK MANAGER</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index" id="none">Home</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="About" id="none">About</a></li>
+                <li><a asp-area="" asp-controller="Home" asp-action="Contact" id="none">Contact</a></li>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+
+                @{
+                    string key = Context.Session.GetString("key");
+
+                    if (key != null)
+                    {
+                        int role = (int)Context.Session.GetInt32("role");
+                        if (role == 2)
+                        {
+
+                            <li id="admin"><a asp-area="" asp-controller="Admin" asp-action="Index" id="none">Admin panel</a></li>
+                        }
+
+                        string name = Context.Session.GetString("name");
+                        name = name.First().ToString().ToUpper() + String.Join("", name.Skip(1));
+
+                        <li><a asp-area="" asp-controller="BoardTasks" asp-action="Index" id="none">Board Tasks</a></li>
+                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1" id="none">@name<i class="material-icons right">arrow_drop_down</i></a></li>
+
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Account" asp-action="Signin" id="none">Sign in</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register" id="none">Register</a></li>
+
+                    }
+                }
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <ul class="sidenav" id="mobile-demo">
+        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+
+        @{
+
+            if (key != null)
+            {
+                int role = (int)Context.Session.GetInt32("role");
+                if (role == 2)
+                {
+
+                    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin panel</a></li>
+                }
+
+                string name = Context.Session.GetString("name");
+                name = name.First().ToString().ToUpper() + String.Join("", name.Skip(1));
+
+                <li><a asp-area="" asp-controller="BoardTasks" asp-action="Index">Board Tasks</a></li>
+
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">@name<i class="material-icons right">arrow_drop_down</i></a></li>
+            }
+            else
+            {
+                <li><a asp-area="" asp-controller="Account" asp-action="Signin">Sign in</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+
+            }
+        }
+    </ul>
+
+
+
+
+
+
+
+    <div>
+        @RenderBody()
+
+        <footer class="page-footer f" style="background-color: cornflowerblue">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">TASK MANAGER</h5>
+                        <p class="grey-text text-lighten-4"> Менеджер задач. Создавай задачи, контролируй этапы их выполнения. Используй свое время оптимально!</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+
+                            <li><a asp-area="" asp-controller="Home" asp-action="Index" class="grey-text text-lighten-3" id="none">Home</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="About" class="grey-text text-lighten-3" id="none">About</a></li>
+                            <li class="none"><a asp-area="" asp-controller="Home" asp-action="Contact" class="grey-text text-lighten-3" id="none">Contact</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    &copy; 2019 - TaskManager
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+   
+
+
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    @*<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>*@
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="~/js/master.js" asp-append-version="true"></script>
+    <script src="~/js/admincontroller.js" asp-append-version="true"></script>
+    <script src="~/js/boardtaskcontroller.js" asp-append-version="true"></script>
+    <script src="~/js/nodecontroller.js" asp-append-version="true"></script>
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+
+
+ 
+</body>
+</html>

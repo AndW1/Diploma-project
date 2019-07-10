@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error404</title>
+
+    <style>
+        #href {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+
+       IMG.displayed {
+            display: block;
+            margin-left: auto;
+            margin-right: auto
+        }
+        
+    </style>
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+@*<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>*@
+
+</head>
+<body>
+    <div class="container">
+        <IMG class="displayed" src="~/images/icon/error404.png">
+    </div>
+
+    <div class="container" id="href">
+    
+        <a class="btn btn-primary" style="position:center" href="javascript:history.back()">Back to previous page</a>
+    </div>
+
+  
+
+</body>
+</html>

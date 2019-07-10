@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "RegisterError";
+    Layout = "~/Views/Shared/_Master.cshtml";
+}
+
+<h2>RegisterError</h2>
+
+<div class="alert alert-warning">
+    <strong>Error!</strong> @ViewBag.Exception
+</div>
+
+<a asp-action="Register" style="color:dodgerblue">Back to register</a>
+
